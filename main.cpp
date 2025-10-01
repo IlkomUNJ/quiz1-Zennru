@@ -1,8 +1,10 @@
 #include <iostream>
+#include <limits>
 #include "bank_customer.h"
 #include "buyer.h"
 
 enum PrimaryPrompt{LOGIN, REGISTER, EXIT};
+enum RegisterPrompt { CREATE_BUYER, CREATE_SELLER, BACK };
 
 using namespace std;
 
@@ -18,8 +20,16 @@ int main() {
         cin >> choice;
         prompt = static_cast<PrimaryPrompt>(choice - 1);
         switch (prompt) {
-            case LOGIN:
+            case LOGIN: {
                 cout << "Login selected." << endl;
+                cout << "Enter Username:" ;
+                string username;
+                cin >> username;
+
+                cout << "Login successful. Welcome, " << username << "!" << endl;
+                cout << "Buyer menu will be displayed here.." << endl;
+                break;
+        } 
                 /* if Login is selected, based on authority then provide options:
                 assume user is logged in as Buyer for now
                 1. Chek Account Status (will display if user is Buyer or Seller or both and linked banking account status)
@@ -70,23 +80,72 @@ int main() {
                 9. Exit to main Menu
                 10. Exit Program
                 **/
-                break;
-            case REGISTER:
+            case REGISTER: {
+            RegisterPrompt regPrompt = CREATE_BUYER;
+            while (regPrompt != BACK){
                 cout << "Register selected." << endl;
+                cout << "Select an Option:" << endl;
+                cout << "1. Create a buyer account" << endl;
+                cout << "2. Create a seller account" << endl;
+                cout << "3. Back" << endl;
+                int regChoice;
+                cin >> regChoice;
+                cin.ignore (std::numeric_limits<std::streamsize>::max(), '\n');
+                regPrompt = static_cast<RegisterPrompt>(regChoice - 1);
+                switch (regPrompt){
+                    case CREATE_BUYER: {
+                        cout << "Create Buyer Account Selected." << endl;
+                        string name, address, phone, email;
+                        cout << "Enter Name:"; 
+                        getline(cin, name);
+                        cout << "Enter Home Address:";
+                        getline(cin, address);
+                        cout << "Enter Phone Number:";
+                        getline(cin, phone);
+                        cout << "Enter Email:";
+                        getline(cin, email);
+                        cout << "Buyer Account Created Successfully." << endl;
+                        break; }
+                    case CREATE_SELLER: {
+                        cout << "Create Seller Account Selected." << endl;
+                        string storeName, storeAddress, storePhone, storeEmail;
+                        cout << "Enter Store Name:";
+                        getline (cin, storeName);
+                        cout << "Enter Store Address:";
+                        getline (cin, storeAddress);
+                        cout << "Enter Store Phone Number:";
+                        getline (cin, storePhone);
+                        cout << "Enter Store Email:";
+                        getline (cin, storeEmail);
+                        cout << "Seller Account Created Successfully." << endl;
+                        break; }
+                    case BACK:{
+                        cout << "Back selected" << endl;
+                        break; }
+                    default: {
+                    cout << "Invalid Option" << endl;
+                    break;
+                } }
+                cout << endl;
+            } 
+            
+
                 /* if register is selected then went throuhh registration process:
                 1. Create a new Buyer Account
                 Must provides: Name, Home Address, Phone number, Email
                 2. Option to create a Seller Account (will be linked to Buyer account)
+                Must provides: Home Address, Phone Number, Email
                 Must provides: Store Name, Store Address, Store Phone number, Store Email
                 After finished immediately logged in as Buyer/Seller
                 */
-                break;
-            case EXIT:
+                break;}
+            case EXIT: {
                 cout << "Exiting." << std::endl;
-                break;
-            default:
+                break; }
+            default: {
                 cout << "Invalid option." << endl;
                 break;
+            }
         }
         cout << endl;
     }
@@ -94,4 +153,4 @@ int main() {
     //BankCustomer customer1(1, "Alice", 1000.0);
     //Buyer buyer1(1, customer1.getName(), customer1);
     return 1;
-}
+}  
